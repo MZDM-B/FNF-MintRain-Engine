@@ -58,6 +58,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		addOption(option);
 		option.onChange = onChangeVibration;
 
+		var option:Option = new Option('remove perfect combo',
+			"If unchecked, as title",
+			'rmperfect',
+			BOOL);
+		addOption(option);
+
+
 		var option:Option = new Option('Hitsound Volume',
 			'Funny notes does \"Tick!\" when you hit them.',
 			'hitsoundVolume',
@@ -80,14 +87,24 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 30;
 		addOption(option);
 
+		var option:Option = new Option('Perfect! Hit Window',
+			'Changes the amount of time you have\nfor hitting a "Perfect!" in milliseconds.',
+			'perfectWindow',
+			INT);
+		option.displayFormat = '%vms';
+		option.scrollSpeed = 15;
+		option.minValue = 10;
+		option.maxValue = 45;
+		addOption(option);
+
 		var option:Option = new Option('Sick! Hit Window',
 			'Changes the amount of time you have\nfor hitting a "Sick!" in milliseconds.',
 			'sickWindow',
 			INT);
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 15;
-		option.minValue = 15;
-		option.maxValue = 45;
+		option.minValue = 10;
+		option.maxValue = 60;
 		addOption(option);
 
 		var option:Option = new Option('Good Hit Window',
@@ -96,7 +113,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			INT);
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 30;
-		option.minValue = 15;
+		option.minValue = 10;
 		option.maxValue = 90;
 		addOption(option);
 
@@ -106,7 +123,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			INT);
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 60;
-		option.minValue = 15;
+		option.minValue = 10;
 		option.maxValue = 135;
 		addOption(option);
 

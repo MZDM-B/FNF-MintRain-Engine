@@ -7,7 +7,7 @@ import flixel.addons.display.shapes.FlxShapeCircle;
 
 import states.stages.StageWeek1 as BackgroundStage;
 
-class NoteOffsetState extends MusicBeatState
+class NoteOffsetStateNew extends MusicBeatState
 {
 	var stageDirectory:String = 'week1';
 	var boyfriend:Character;
@@ -37,6 +37,17 @@ class NoteOffsetState extends MusicBeatState
 	var controllerPointer:FlxSprite;
 	var _lastControllerMode:Bool = false;
 
+public var iconP1:FlxSprite;
+public var iconP2:FlxSprite;
+public var songScore:Int = 0;
+public var songHits:Int = 0;
+public var songMisses:Int = 0;
+public var scoreTxt:FlxText;
+var scoreTxtTween:FlxTween;
+public var health:Float = 1;
+
+public var healthBar:Bar;
+var songPercent:Float = 0;
 	override public function create()
 	{
 		#if DISCORD_ALLOWED
@@ -95,6 +106,14 @@ class NoteOffsetState extends MusicBeatState
 		rating.setGraphicSize(Std.int(rating.width * 0.7));
 		rating.updateHitbox();
 		
+		/*msTimeTxt = new FlxText(0, 0, 400, "", 25);
+		msTimeTxt.setFormat(Paths.font('Fucked.ttf'), 25, 0xFF75c6ff, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		msTimeTxt.scrollFactor.set();
+		msTimeTxt.alpha = 0;
+		msTimeTxt.visible = true;
+		msTimeTxt.borderSize = 2;
+		add(msTimeTxt);
+*/
 		add(rating);
 
 		/*if(!ClientPrefs.data.rmperfect)
@@ -113,6 +132,39 @@ class NoteOffsetState extends MusicBeatState
 		//if(ClientPrefs.exratingDisplay){
 			add(theEXrating);
 		//}
+
+
+		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBar', function() return health, 0, 2);
+		healthBar.screenCenter(X);
+		healthBar.leftToRight = false;
+		healthBar.scrollFactor.set();
+		healthBar.visible = !ClientPrefs.data.hideHud;
+		healthBar.alpha = ClientPrefs.data.healthBarAlpha;
+		add(healthBar);
+
+		iconP1 = new /*FlxSprite('bf', true);*/FlxSprite().loadGraphic(Paths.image('icons/icon-bf'));
+		iconP1.y = healthBar.y - 75;
+		iconP1.visible = !ClientPrefs.data.hideHud;
+		iconP1.alpha = ClientPrefs.data.healthBarAlpha;
+		//add(iconP1);
+
+		//iconP2 = new FlxSprite('gf', false);
+		iconP2 = new /*FlxSprite('bf', true);*/FlxSprite().loadGraphic(Paths.image('icons/icon-gf'));
+
+		iconP2.y = healthBar.y - 75;
+		iconP2.visible = !ClientPrefs.data.hideHud;
+		iconP2.alpha = ClientPrefs.data.healthBarAlpha;
+		//add(iconP2);
+
+
+		
+
+		scoreTxt = new FlxText(0, healthBar.y + 40, FlxG.width, "Score: 40000 | Misses: 0 | Rating: Perfect!!!(100%)", 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.scrollFactor.set();
+		scoreTxt.borderSize = 1.25;
+		scoreTxt.visible = !ClientPrefs.data.hideHud;
+		add(scoreTxt);
 
 
 		comboNums = new FlxSpriteGroup();
@@ -510,10 +562,10 @@ class NoteOffsetState extends MusicBeatState
 		
 		if(curBeat % 4 == 2)
 		{
-			FlxG.camera.zoom = 1.15;
+			FlxG.camera.zoom = 1.1;
 
 			if(zoomTween != null) zoomTween.cancel();
-			zoomTween = FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.circOut, onComplete: function(twn:FlxTween)
+			zoomTween = FlxTween.tween(FlxG.camera, {zoom: 1}, 0.8, {ease: FlxEase.circOut, onComplete: function(twn:FlxTween)
 				{
 					zoomTween = null;
 				}
@@ -528,12 +580,33 @@ class NoteOffsetState extends MusicBeatState
 					beatTween = null;
 				}
 			});
+//更多的东西
+			if(ClientPrefs.data.ratbounce == true) {
+			rating.angle = (Math.random() * 10 + 7) * (Math.random() > .5 ? 1 : -1);
+			FlxTween.tween(rating, {angle: 0}, .8, {ease: FlxEase.backOut});
+			}
 
-			theEXrating.scale.set(0.8, 0.8);
-			FlxTween.tween(theEXrating.scale, {x: 0.7, y: 0.7}, 0.7, {
+			if(ClientPrefs.data.exratbounce == true) {
+				theEXrating.angle = (Math.random() * 10 + 7) * (Math.random() > .5 ? 1 : -1);
+				FlxTween.tween(theEXrating, {angle: 0}, .8, {ease: FlxEase.backOut});
+				}
+	
+
+			theEXrating.scale.set(0.85, 0.85);
+			FlxTween.tween(theEXrating.scale, {x: 0.7, y: 0.7}, 0.5, {
 				ease: FlxEase.circOut,
 			});
 
+			iconP1.scale.set(1.2, 1.2);
+			iconP2.scale.set(1.2, 1.2);
+			FlxTween.tween(iconP1.scale, {x: 1, y: 1}, 0.4, {
+				ease: FlxEase.circOut,
+			});
+			FlxTween.tween(iconP2.scale, {x: 1, y: 1}, 0.4, {
+				ease: FlxEase.circOut,
+			});
+
+		
 		}
 
 		lastBeatHit = curBeat;
@@ -603,6 +676,10 @@ class NoteOffsetState extends MusicBeatState
 		comboNums.visible = onComboMenu;
 		dumbTexts.visible = onComboMenu;
 		theEXrating.visible = onComboMenu;
+		iconP1.visible = onComboMenu;
+		iconP2.visible = onComboMenu;
+		scoreTxt.visible = onComboMenu;
+		healthBar.visible = onComboMenu;
 
 		timeBar.visible = !onComboMenu;
 		timeTxt.visible = !onComboMenu;
