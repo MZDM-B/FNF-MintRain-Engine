@@ -73,19 +73,38 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X = 42;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 
-	public var ratingStuff:Array<Dynamic> = [
-		['You Suck!', 0.2], //From 0% to 19%
-		['Shit', 0.4], //From 20% to 39%
-		['Bad', 0.5], //From 40% to 49%
-		['Bruh', 0.6], //From 50% to 59%
-		['Meh', 0.69], //From 60% to 68%
-		['Nice', 0.7], //69%
-		['Good', 0.8], //From 70% to 79%
-		['Great', 0.9], //From 80% to 89%
-		['Sick!', 1], //From 90% to 99%
-		['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
-	];
-
+	public var ratingStuff:Array<Dynamic> = ClientPrefs.data.scoretxtstyle == "Kade" ?
+    [
+        ["AAAAA", 1], // accuracy >= 99.9935
+        ["AAAAA", 1], // accuracy >= 99.9935
+        ["AAAA:", 0.999935], // accuracy >= 99.980
+        ["AAAA.", 0.99980], // accuracy >= 99.970
+        ["AAAA", 0.99970], // accuracy >= 99.955
+        ["AAA:", 0.99955], // accuracy >= 99.90
+        ["AAA.", 0.999], // accuracy >= 99.80
+        ["AAA", 0.998], // accuracy >= 99.70
+        ["AA:", 0.997], // accuracy >= 99
+        ["AA.", 0.99], // accuracy >= 96.50
+        ["AA", 0.965], // accuracy >= 93
+        ["A:", 0.93], // accuracy >= 90
+        ["A.", 0.9], // accuracy >= 85
+        ["A", 0.85], // accuracy >= 80
+        ["B", 0.80], // accuracy >= 70
+        ["C", 0.7], // accuracy >= 60
+        ["D", 0.6] // accuracy < 60
+    ] :
+    [
+        ['You Suck!', 0.2], //From 0% to 19%
+        ['Shit', 0.4], //From 20% to 39%
+        ['Bad', 0.5], //From 40% to 49%
+        ['Bruh', 0.6], //From 50% to 59%
+        ['Meh', 0.69], //From 60% to 68%
+        ['Nice', 0.7], //69%
+        ['Good', 0.8], //From 70% to 79%
+        ['Great', 0.9], //From 80% to 89%
+        ['Sick!', 1], //From 90% to 99%
+        ['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
+    ];	
 	//event variables
 	private var isCameraOnForcedPos:Bool = false;
 
@@ -220,6 +239,15 @@ class PlayState extends MusicBeatState
 	public static var deathCounter:Int = 0;
 
 	public var defaultCamZoom:Float = 1.05;
+
+//杂七杂八的新特性
+public var npsfix:Int = 0;
+public var npscheck:Int = 0;
+public var maxNPS:Int = 0;
+var notesHitArray:Array<Date> = [];
+
+
+
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
@@ -1158,7 +1186,16 @@ class PlayState extends MusicBeatState
 		}
 
 		var tempScore:String;
-		if(!instakillOnMiss) tempScore = Language.getPhrase('score_text', 'Score: {1} | Misses: {2} | Rating: {3}', [songScore, songMisses, str]);
+		if(!instakillOnMiss) {
+			if (ClientPrefs.data.scoretxtstyle == "Kade")
+				tempScore = Language.getPhrase('score_text', 'NPS: {4} (Max {5}) | Score: {1} | Misses: {2} | Rating: {3}', [songScore, songMisses, str, npsfix, maxNPS]);
+
+			else tempScore = Language.getPhrase('score_text', 'Score: {1} | Misses: {2} | Rating: {3}', [songScore, songMisses, str]);
+		
+		
+		
+		}
+		
 		else tempScore = Language.getPhrase('score_text_instakill', 'Score: {1} | Rating: {2}', [songScore, str]);
 		scoreTxt.text = tempScore;
 	}
@@ -1784,6 +1821,31 @@ class PlayState extends MusicBeatState
 				unspawnNotes.splice(index, 1);
 			}
 		}
+
+		{
+			var balls = notesHitArray.length - 1;
+			while (balls >= 0)
+			{
+				var cock:Date = notesHitArray[balls];
+				if (cock != null && cock.getTime() + 1000 < Date.now().getTime())
+					notesHitArray.remove(cock);
+				else
+					balls = 0;
+				balls--;
+			}
+			npsfix = notesHitArray.length;
+			if (npsfix > maxNPS)
+				maxNPS = npsfix;
+
+			if (npscheck != npsfix) {
+			
+			    npscheck = npsfix;			    
+			    updateScoreText();				  
+			}
+			setOnLuas('nps', npsfix);
+			setOnLuas('npsMax', maxNPS);	
+
+		}		
 
 		if (generatedMusic)
 		{
