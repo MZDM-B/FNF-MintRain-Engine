@@ -16,7 +16,7 @@ import states.TitleState;
 	public var screensaver:Bool = false;
 	public var wideScreen:Bool = false;
 	#if android
-	public var storageType:String = "EXTERNAL_DATA";
+	public var storageType:String = "EXTERNAL";
 	#end
 	public var hitboxType:String = "Gradient";
 	public var popUpRating:Bool = true;
@@ -82,7 +82,7 @@ import states.TitleState;
 		'opponentplay' => false
 	];
 
-	public var comboOffset:Array<Int> = [0, 0, 0, 0];
+	public var comboOffset:Array<Int> = [0, 0, 0, 0, 0, 0];
 	public var ratingOffset:Int = 0;
 	public var sickWindow:Int = 45;
 	public var goodWindow:Int = 90;
@@ -92,6 +92,23 @@ import states.TitleState;
 	public var discordRPC:Bool = true;
 	public var loadingScreen:Bool = true;
 	public var language:String = 'en-US';
+	public var perfectWindow:Int = 25;
+
+		
+	public var coloredfpscounter:Bool = false;
+	public var exgameversion:Bool = true;
+	public var exratingDisplay:Bool = true;
+	public var rmperfect:Bool = false;	
+	public var ratbounce:Bool = true;
+	//public var osIconBop:Bool = false;
+	public var scoretxtstyle:String = 'MintRain';
+	public var rmmsTimeTxt:Bool = false;
+	public var scoretxtbounce:Bool = false;
+	public var exratbounce:Bool = false;
+	public var iconbopstyle:String = 'MintRain';
+	public var hpbarstyle:String = 'Psych';
+
+
 }
 
 class ClientPrefs {

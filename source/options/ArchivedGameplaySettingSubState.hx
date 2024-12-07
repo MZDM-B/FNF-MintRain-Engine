@@ -27,7 +27,7 @@ class ArchivedGameplaySettingSubState extends BlueBaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('Extra-Rating Bounce',
-		"加强扩展评分图标的跳动效果",
+		"加强扩展评分图标的跳动效果\n当然，这个选项也存在bug，也推荐禁用",
 		'exratbounce',
 		BOOL);
 		addOption(option);
@@ -42,7 +42,7 @@ class ArchivedGameplaySettingSubState extends BlueBaseOptionsMenu
 		"（施工中）\n设置健康条的样式",
 		'healthbarstyle',
 		STRING,
-		['PE', 'OSE', 'OSA', 'KE']);
+		['Psych', 'OS', 'MintRain', 'Kade']);
 		addOption(option);
 
 
@@ -50,14 +50,14 @@ class ArchivedGameplaySettingSubState extends BlueBaseOptionsMenu
 		"（施工中）\n设置小图标的跳动样式",
 		'iconbopstyle',
 		STRING,
-		['PE', 'OSE', 'OSA', 'KE', 'NONE']);
+		['Psych', 'OS', 'MintRain', 'Kade', 'NONE']);
 		addOption(option);
 
 		var option:Option = new Option('ScoreTxt Style',
 		'（施工中）\n修改scoreTxt的显示样式',
 		'scoretxtstyle',
 		STRING,
-		['PE', 'OSE', 'OSA', 'KE']);
+		['Psych', 'OS', 'MintRain', 'Kade']);
 		addOption(option);
 
 		var option:Option = new Option('Remove the "ms" offset',

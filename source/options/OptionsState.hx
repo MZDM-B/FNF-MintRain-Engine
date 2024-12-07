@@ -15,9 +15,8 @@ class OptionsState extends MusicBeatState
 		'Adjust Delay and Combo',
 		'Graphics',
 		'Visuals',
-		'Gameplay'
-		#if TRANSLATIONS_ALLOWED , 'Language' #end
-		,'Mobile Options'
+		'Gameplay',
+		'Extra Options'
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
@@ -49,13 +48,9 @@ class OptionsState extends MusicBeatState
 			case 'Gameplay':
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
-				MusicBeatState.switchState(new options.NoteOffsetState());
-			case 'Mobile Options':
-				openSubState(new mobile.options.MobileOptionsSubState());
-			#if TRANSLATIONS_ALLOWED
-			case 'Language':
-				openSubState(new options.LanguageSubState());
-			#end
+				MusicBeatState.switchState(new options.NoteOffsetStateNew());
+			case 'Extra Options':
+				MusicBeatState.switchState(new options.ExtraOptionsState());
 		}
 	}
 

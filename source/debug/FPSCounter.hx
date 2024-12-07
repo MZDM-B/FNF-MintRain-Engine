@@ -41,7 +41,7 @@ class FPSCounter extends TextField
 
     public var os:String = '';
 
-    public function new(x:Float = 10, y:Float = 0, color:Int = 0x000000)
+    public function new(x:Float = 10, y:Float = 5, color:Int = 0x000000)
     {
         super();
 
@@ -58,7 +58,7 @@ class FPSCounter extends TextField
         selectable = false;
         mouseEnabled = false;
         //defaultTextFormat = new TextFormat("_sans", 14, color);
-        defaultTextFormat = new TextFormat(openfl.utils.Assets.getFont("assets/fonts/cnfont.ttf").fontName, 13, color);
+        defaultTextFormat = new TextFormat(openfl.utils.Assets.getFont("assets/fonts/cnfont.ttf").fontName, 14, color);
 
         width = FlxG.width;
         multiline = true;
@@ -94,9 +94,8 @@ class FPSCounter extends TextField
         }
         text = 
         'FPS: $currentFPS' + 
-        '\nMemory: ${flixel.util.FlxStringUtil.formatBytes(memoryMegas)} / ${flixel.util.FlxStringUtil.formatBytes(memoryPeak)}' +
-        os ;
-        if(ClientPrefs.data.exgameversion) text += "\nMintRain Engine 0.2.0\nPsych Engine v1.0";
+        '\nMemory: ${flixel.util.FlxStringUtil.formatBytes(memoryMegas)}' +' / ${flixel.util.FlxStringUtil.formatBytes(memoryPeak)}' + os ;
+        if(ClientPrefs.data.exgameversion) text += "\nMintRain Engine 0.2.0 Beta\nPsych Engine v1.0";
 
         textColor = 0xFFFFFFFF;
         if (currentFPS < FlxG.drawFramerate * 0.5)

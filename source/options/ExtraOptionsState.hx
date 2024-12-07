@@ -10,7 +10,7 @@ import sys.thread.Mutex;
 class ExtraOptionsState extends MusicBeatState
 {
 	var options:Array<String> = [
-		'Archive Option Things'
+		'Archive Options'
 		#if TRANSLATIONS_ALLOWED , 
 		'Language'
 		 #end,
@@ -33,7 +33,7 @@ class ExtraOptionsState extends MusicBeatState
 				MusicBeatState.switchState(new options.NoteOffsetState());
 			case 'Mobile Options':
 				openSubState(new mobile.options.MobileOptionsSubState());
-			case 'Archive Option Things':
+			case 'Archive Options':
 				openSubState(new options.ArchivedGameplaySettingSubState());
 			#if TRANSLATIONS_ALLOWED
 			case 'Language':
