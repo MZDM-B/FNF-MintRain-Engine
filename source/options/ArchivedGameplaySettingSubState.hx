@@ -14,6 +14,12 @@ class ArchivedGameplaySettingSubState extends BlueBaseOptionsMenu
 		BOOL);
 		addOption(option);
 
+		var option:Option = new Option('Focus Game', //Name
+		"当游戏未处于焦点时会暂停", //Description
+		'autoPause',
+		BOOL);
+		addOption(option);
+
 		var option:Option = new Option('Show Extra-Rating',
 		"显示额外的rating\n文件名（例子）: sick-extra.png\n别在pixel场景启用它，因为大喵没有做，除非你有类似贴图",
 		'exratingDisplay',

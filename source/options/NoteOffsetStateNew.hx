@@ -615,16 +615,16 @@ var songPercent:Float = 0;
 	function repositionCombo()
 	{
 		rating.screenCenter();
-		rating.x = coolText.x - 40 + ClientPrefs.data.comboOffset[0];
-		rating.y -= 60 + ClientPrefs.data.comboOffset[1];
+		rating.x = coolText.x - 40 + ClientPrefs.data.comboOffset[0] - 100;
+		rating.y -= 60 + ClientPrefs.data.comboOffset[1] /*+ 30 - 15*/;
 
 		comboNums.screenCenter();
 		comboNums.x = coolText.x - 90 + ClientPrefs.data.comboOffset[2];
 		comboNums.y += 80 - ClientPrefs.data.comboOffset[3];
 
 		theEXrating.screenCenter();
-		theEXrating.x = coolText.x + 100 + ClientPrefs.data.comboOffset[4];
-		theEXrating.y += 60 - ClientPrefs.data.comboOffset[5];
+		theEXrating.x = coolText.x - 40 + ClientPrefs.data.comboOffset[4] + 13;
+		theEXrating.y += 0 - 60 - ClientPrefs.data.comboOffset[5] -60;
 
 		reloadTexts();
 
@@ -658,8 +658,8 @@ var songPercent:Float = 0;
 				case 1: dumbTexts.members[i].text = '[' + ClientPrefs.data.comboOffset[0] + ', ' + ClientPrefs.data.comboOffset[1] + ']';
 				case 2: dumbTexts.members[i].text = Language.getPhrase('combo_numbers_offset', 'Numbers Offset:');
 				case 3: dumbTexts.members[i].text = '[' + ClientPrefs.data.comboOffset[2] + ', ' + ClientPrefs.data.comboOffset[3] + ']';
-				case 4: dumbTexts.members[i].text = Language.getPhrase('combo_exrating_offset', 'Extra Rating Offset:');
-				case 5: dumbTexts.members[i].text = '[' + ClientPrefs.data.comboOffset[4] + ', ' + ClientPrefs.data.comboOffset[5] + ']';
+				case 4: dumbTexts.members[i].text = Language.getPhrase('combo_exrating_offset', '\nExtra Rating Offset:');
+				case 5: dumbTexts.members[i].text = '\n[' + ClientPrefs.data.comboOffset[4] + ', ' + ClientPrefs.data.comboOffset[5] + ']';
 			}
 		}
 	}
