@@ -520,6 +520,8 @@ class LuaUtils
 		switch(cam.toLowerCase()) {
 			case 'camgame' | 'game': return PlayState.instance.camGame;
 			case 'camhud' | 'hud': return PlayState.instance.camHUD;
+			case 'cambelowhud' | 'belowhud': return PlayState.instance.camBelowHUD;
+			case 'camarchived' | 'archived': return PlayState.instance.camArchived;
 			case 'camother' | 'other': return PlayState.instance.camOther;
 		}
 		var camera:FlxCamera = MusicBeatState.getVariables().get(cam);

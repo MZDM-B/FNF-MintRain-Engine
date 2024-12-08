@@ -70,29 +70,35 @@ import crowplexus.iris.Iris;
 **/
 class PlayState extends MusicBeatState
 {
+	//杂七杂八的新特性
+    var notesHitArray:Array<Date> = [];
+    var nps:Int = 0;
+	var maxNPS:Int = 0;
+	var npsCheck:Int = 0;
+
 	public static var STRUM_X = 42;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 
 	public var ratingStuff:Array<Dynamic> = ClientPrefs.data.scoretxtstyle == "Kade" ?
     [
-        ["AAAAA", 1], // accuracy >= 99.9935
-        ["AAAAA", 1], // accuracy >= 99.9935
-        ["AAAA:", 0.999935], // accuracy >= 99.980
-        ["AAAA.", 0.99980], // accuracy >= 99.970
-        ["AAAA", 0.99970], // accuracy >= 99.955
-        ["AAA:", 0.99955], // accuracy >= 99.90
-        ["AAA.", 0.999], // accuracy >= 99.80
-        ["AAA", 0.998], // accuracy >= 99.70
-        ["AA:", 0.997], // accuracy >= 99
-        ["AA.", 0.99], // accuracy >= 96.50
-        ["AA", 0.965], // accuracy >= 93
-        ["A:", 0.93], // accuracy >= 90
-        ["A.", 0.9], // accuracy >= 85
-        ["A", 0.85], // accuracy >= 80
-        ["B", 0.80], // accuracy >= 70
-        ["C", 0.7], // accuracy >= 60
-        ["D", 0.6] // accuracy < 60
-    ] :
+		["D", 0.6], // accuracy < 60
+		["C", 0.7], // accuracy >= 60
+		["B", 0.80], // accuracy >= 70
+		["A", 0.85], // accuracy >= 80
+		["A.", 0.9], // accuracy >= 85
+		["A:", 0.93], // accuracy >= 90
+		["AA", 0.965], // accuracy >= 93
+		["AA.", 0.99], // accuracy >= 96.50
+		["AA:", 0.997], // accuracy >= 99
+		["AAA", 0.998], // accuracy >= 99.70
+		["AAA.", 0.999], // accuracy >= 99.80
+		["AAA:", 0.99955], // accuracy >= 99.90
+		["AAAA", 0.99970], // accuracy >= 99.955
+		["AAAA.", 0.99980], // accuracy >= 99.970
+		["AAAA:", 0.999935], // accuracy >= 99.980
+		["AAAAA", 1], // accuracy >= 99.9935
+		["AAAAA", 1], // accuracy >= 99.9935    
+		] :
     [
         ['You Suck!', 0.2], //From 0% to 19%
         ['Shit', 0.4], //From 20% to 39%
@@ -221,6 +227,8 @@ class PlayState extends MusicBeatState
 	public var iconP1:HealthIcon;
 	public var iconP2:HealthIcon;
 	public var camHUD:FlxCamera;
+	public var camArchived:FlxCamera;
+	public var camBelowHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
 	public var luaTpadCam:FlxCamera;
@@ -239,15 +247,6 @@ class PlayState extends MusicBeatState
 	public static var deathCounter:Int = 0;
 
 	public var defaultCamZoom:Float = 1.05;
-
-//杂七杂八的新特性
-public var npsfix:Int = 0;
-public var npscheck:Int = 0;
-public var maxNPS:Int = 0;
-var notesHitArray:Array<Date> = [];
-
-
-
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
@@ -334,15 +333,21 @@ var notesHitArray:Array<Date> = [];
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = initPsychCamera();
+		camBelowHUD = new FlxCamera();
 		camHUD = new FlxCamera();
 		camOther = new FlxCamera();
+		camArchived = new FlxCamera();
 		luaTpadCam = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		camOther.bgColor.alpha = 0;
+		camBelowHUD.bgColor.alpha = 0;
+		camArchived.bgColor.alpha = 0;
 		luaTpadCam.bgColor.alpha = 0;
 
+		FlxG.cameras.add(camBelowHUD, false);
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOther, false);
+		FlxG.cameras.add(camArchived, false);
 		FlxG.cameras.add(luaTpadCam, false);
 
 		persistentUpdate = true;
@@ -1188,7 +1193,7 @@ var notesHitArray:Array<Date> = [];
 		var tempScore:String;
 		if(!instakillOnMiss) {
 			if (ClientPrefs.data.scoretxtstyle == "Kade")
-				tempScore = Language.getPhrase('score_text', 'NPS: {4} (Max {5}) | Score: {1} | Misses: {2} | Rating: {3}', [songScore, songMisses, str, npsfix, maxNPS]);
+				tempScore = Language.getPhrase('score_text', 'NPS: {4} (Max {5}) | Score: {1} | Misses: {2} | Rating: {3}', [songScore, songMisses, str, nps, maxNPS]);
 
 			else tempScore = Language.getPhrase('score_text', 'Score: {1} | Misses: {2} | Rating: {3}', [songScore, songMisses, str]);
 		
@@ -1704,6 +1709,31 @@ var notesHitArray:Array<Date> = [];
 
 	override public function update(elapsed:Float)
 	{
+		{
+			var balls = notesHitArray.length - 1;
+			while (balls >= 0)
+			{
+				var cock:Date = notesHitArray[balls];
+				if (cock != null && cock.getTime() + 1000 < Date.now().getTime())
+					notesHitArray.remove(cock);
+				else
+					balls = 0;
+				balls--;
+			}
+			nps = notesHitArray.length;
+			if (nps > maxNPS)
+				maxNPS = nps;
+				
+			setOnLuas('nps', nps);
+			setOnLuas('maxFPS', maxNPS);	
+				
+			if (npsCheck != nps) {
+			
+			    npsCheck = nps;			    
+			    updateScoreText();				  
+			}
+		}
+
 		if(!inCutscene && !paused && !freezeCamera) {
 			FlxG.camera.followLerp = 0.04 * cameraSpeed * playbackRate;
 			if(!startingSong && !endingSong && boyfriend.getAnimationName().startsWith('idle')) {
@@ -1822,30 +1852,6 @@ var notesHitArray:Array<Date> = [];
 			}
 		}
 
-		{
-			var balls = notesHitArray.length - 1;
-			while (balls >= 0)
-			{
-				var cock:Date = notesHitArray[balls];
-				if (cock != null && cock.getTime() + 1000 < Date.now().getTime())
-					notesHitArray.remove(cock);
-				else
-					balls = 0;
-				balls--;
-			}
-			npsfix = notesHitArray.length;
-			if (npsfix > maxNPS)
-				maxNPS = npsfix;
-
-			if (npscheck != npsfix) {
-			
-			    npscheck = npsfix;			    
-			    updateScoreText();				  
-			}
-			setOnLuas('nps', npsfix);
-			setOnLuas('npsMax', maxNPS);	
-
-		}		
 
 		if (generatedMusic)
 		{

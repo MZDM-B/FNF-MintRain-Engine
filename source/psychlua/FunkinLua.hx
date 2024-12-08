@@ -555,6 +555,8 @@ class FunkinLua {
 			switch(camera.toLowerCase()) {
 				case 'camgame' | 'game': camera = 'camGame';
 				case 'camhud' | 'hud': camera = 'camHUD';
+				case 'cambelowhud' | 'belowhud': camera = 'camBelowHUD';
+				case 'camarchived' | 'archived': camera = 'camArchived';
 				case 'camother' | 'other': camera = 'camOther';
 				default:
 					var cam:FlxCamera = MusicBeatState.getVariables().get(camera);
