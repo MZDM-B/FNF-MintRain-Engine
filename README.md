@@ -16,11 +16,14 @@ same goes for *Lua Scripts*, comment out or delete the line with `LUA_ALLOWED`, 
 
 ## MintRain Credits:
 KittyCathy - Head Developer
+
 Kimi(AI) - Main Programmer
 
 ### MintRain Special Thanks:
 [NovaFlare Engine](https://github.com/beihu235/FNF-NovaFlare-Engine)
+
 [OS Engine](https://github.com/notweuz/FNF-OSEngine)
+
 [Kade Engine](https://github.com/KadeArchive/Kade-Engine)
 
 ## Mobile Credits:
