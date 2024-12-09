@@ -82,6 +82,8 @@ class PlayState extends MusicBeatState
 	var msTimeTxtTween2:FlxTween;
 	var scoreTxtTweenAngle:FlxTween;
 	var dancingLeft:Bool = false;
+	var ratingexspr:String = '';
+	var exratingexspr:String = '-extra';
 
 
 	public static var STRUM_X = 42;
@@ -2622,9 +2624,9 @@ class PlayState extends MusicBeatState
 			uiFolder = uiPrefix + "UI/";
 
 		for (rating in ratingsData)
-			Paths.image(uiFolder + rating.image + uiPostfix);
+			Paths.image(uiFolder + rating.image + ratingexspr+ uiPostfix);
 		for (theEXrating in ratingsData)
-			Paths.image(uiFolder + theEXrating.image + '-extra'+ uiPostfix);
+			Paths.image(uiFolder + theEXrating.image + exratingexspr + uiPostfix);
 		for (i in 0...10)
 			Paths.image(uiFolder + 'num' + i + uiPostfix);
 	}
@@ -2705,7 +2707,7 @@ class PlayState extends MusicBeatState
 
 		if (ClientPrefs.data.popUpRating)
 		{
-			rating.loadGraphic(Paths.image(uiFolder + daRating.image + uiPostfix));
+			rating.loadGraphic(Paths.image(uiFolder + daRating.image + ratingexspr + uiPostfix));
 			rating.screenCenter();
 			rating.x = placement - 40;
 			rating.y -= 60;
@@ -2717,7 +2719,7 @@ class PlayState extends MusicBeatState
 			rating.y -= ClientPrefs.data.comboOffset[1] - 120;
 			rating.antialiasing = antialias;
 
-			theEXrating.loadGraphic(Paths.image(uiFolder + daRating.image + '-extra' + uiPostfix));
+			theEXrating.loadGraphic(Paths.image(uiFolder + daRating.image + exratingexspr + uiPostfix));
 			theEXrating.screenCenter();
 			theEXrating.x = placement - 40;
 			theEXrating.y -= 60;
