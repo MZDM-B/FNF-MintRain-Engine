@@ -713,8 +713,8 @@ class FunkinLua {
 		});
 
 		// others
-		set("triggerEvent", function(name:String, ?value1:String = '', ?value2:String = '') {
-			game.triggerEvent(name, value1, value2, Conductor.songPosition);
+		set("triggerEvent", function(name:String, ?value1:String = '', ?value2:String = '', ?value3:String = '', ?value4:String = '') {
+			game.triggerEvent(name, value1, value2, value3, value4, Conductor.songPosition);
 			//trace('Triggered event: ' + name + ', ' + value1 + ', ' + value2);
 			return true;
 		});
