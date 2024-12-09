@@ -2713,8 +2713,8 @@ class PlayState extends MusicBeatState
 			rating.velocity.y -= FlxG.random.int(140, 175) * playbackRate;
 			rating.velocity.x -= FlxG.random.int(0, 10) * playbackRate;
 			rating.visible = (!ClientPrefs.data.hideHud && showRating);
-			rating.x += ClientPrefs.data.comboOffset[0] - 100;
-			rating.y -= ClientPrefs.data.comboOffset[1] -120;
+			rating.x += ClientPrefs.data.comboOffset[0] - 130;
+			rating.y -= ClientPrefs.data.comboOffset[1] - 120;
 			rating.antialiasing = antialias;
 
 			theEXrating.loadGraphic(Paths.image(uiFolder + daRating.image + '-extra' + uiPostfix));
@@ -2726,7 +2726,7 @@ class PlayState extends MusicBeatState
 			theEXrating.velocity.x -= FlxG.random.int(0, 10) * playbackRate;
 			theEXrating.visible = (!ClientPrefs.data.hideHud && showRating);
 			theEXrating.x += ClientPrefs.data.comboOffset[4] + 130;
-			theEXrating.y -= ClientPrefs.data.comboOffset[5] - 60;
+			theEXrating.y -= ClientPrefs.data.comboOffset[5] - 60 - 140;
 			theEXrating.antialiasing = antialias;
 
 			var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(uiFolder + 'combo' + uiPostfix));
@@ -2738,7 +2738,7 @@ class PlayState extends MusicBeatState
 			comboSpr.x += ClientPrefs.data.comboOffset[0];
 			comboSpr.y -= ClientPrefs.data.comboOffset[1] + 100;
 			comboSpr.antialiasing = antialias;
-			comboSpr.y += 60 + 30 - 80;
+			comboSpr.y += 60 + 30 - 80 + 200;
 			comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
 
 			msTimeTxt = new FlxText(0, 0, 400, "", 32);
@@ -2784,7 +2784,7 @@ class PlayState extends MusicBeatState
 				var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(uiFolder + 'num' + Std.parseInt(separatedScore.charAt(i)) + uiPostfix));
 				numScore.screenCenter();
 				numScore.x = placement + (43 * daLoop) - 90 + ClientPrefs.data.comboOffset[2];
-				numScore.y += 80 - ClientPrefs.data.comboOffset[3];
+				numScore.y += 80 - ClientPrefs.data.comboOffset[3] + 120;
 
 				if (!PlayState.isPixelStage)
 					numScore.setGraphicSize(Std.int(numScore.width * 0.5));

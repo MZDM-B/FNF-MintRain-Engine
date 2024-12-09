@@ -615,16 +615,16 @@ var songPercent:Float = 0;
 	function repositionCombo()
 	{
 		rating.screenCenter();
-		rating.x = coolText.x - 40 + ClientPrefs.data.comboOffset[0] - 100;
-		rating.y -= 60 + ClientPrefs.data.comboOffset[1] /*+ 30 - 15*/;
+		rating.x = coolText.x - 40 + ClientPrefs.data.comboOffset[0] - 130;
+		rating.y -= 60 + ClientPrefs.data.comboOffset[1] - 100;
 
 		comboNums.screenCenter();
 		comboNums.x = coolText.x - 90 + ClientPrefs.data.comboOffset[2];
-		comboNums.y += 80 - ClientPrefs.data.comboOffset[3];
+		comboNums.y += 80 - ClientPrefs.data.comboOffset[3] + 80;
 
 		theEXrating.screenCenter();
-		theEXrating.x = coolText.x - 40 + ClientPrefs.data.comboOffset[4] + 13;
-		theEXrating.y += 0 - 60 - ClientPrefs.data.comboOffset[5] -60;
+		theEXrating.x = coolText.x - 40 + ClientPrefs.data.comboOffset[4] + 130;
+		theEXrating.y += 0 - 60 - ClientPrefs.data.comboOffset[5] + 160;
 
 		reloadTexts();
 
