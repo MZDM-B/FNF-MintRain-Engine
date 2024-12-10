@@ -1203,17 +1203,17 @@ class PlayState extends MusicBeatState
 	public dynamic function updateScoreText()
 	{
 		var str:String = Language.getPhrase('rating_$ratingName', ratingName);
-		var osstr:String = Language.getPhrase('rating_$ratingName', ratingName);
+		var osstr:String = '';
 		var kadestr:String = '';
-		var mintrainstr:String = Language.getPhrase('rating_$ratingName', ratingName);
+		var mintrainstr:String = '';
 
 		if(totalPlayed != 0)
 		{
 			var percent:Float = CoolUtil.floorDecimal(ratingPercent * 100, 2);
 			str += ' (${percent}%) - ' + Language.getPhrase(ratingFC);
 			osstr += '${percent}%';
-			kadestr += '${percent}% | (' + Language.getPhrase(ratingFC) + ') ${Language.getPhrase('rating_$ratingName', ratingName)}';
-			mintrainstr += '${percent}% - ' + Language.getPhrase(ratingFC);
+			kadestr += percent + '% | (' + ratingFC + ') ${ratingName}';
+			mintrainstr += '${percent}% - ' + ratingFC + ' | ' + ratingName;
 		}
 
 		var tempScore:String;
@@ -1483,6 +1483,7 @@ class PlayState extends MusicBeatState
 							{
 								oldNote.scale.y *= Note.SUSTAIN_SIZE / oldNote.frameHeight;
 								oldNote.scale.y /= playbackRate;
+								//notesHitArray.unshift(Date.now());
 								oldNote.resizeByRatio(curStepCrochet / Conductor.stepCrochet);
 							}
 
@@ -1492,6 +1493,7 @@ class PlayState extends MusicBeatState
 						else if(oldNote.isSustainNote)
 						{
 							oldNote.scale.y /= playbackRate;
+							//notesHitArray.unshift(Date.now());
 							oldNote.resizeByRatio(curStepCrochet / Conductor.stepCrochet);
 						}
 
@@ -2651,8 +2653,7 @@ class PlayState extends MusicBeatState
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.data.ratingOffset);
 		
 		allNotesMs += noteDiff;
-		averageMs = allNotesMs/songHits;
-
+		averageMs = (allNotesMs / songHits).toInt();
 		/*if (!ClientPrefs.data.rmmsTimeTxt) {
 			msTimeTxt.alpha = 1;
 			msTimeTxt.scale.set(1.35, 1.2);
@@ -3255,6 +3256,7 @@ class PlayState extends MusicBeatState
 				combo++;
 				if(combo > 9999) combo = 9999;
 				popUpScore(note);
+				notesHitArray.unshift(Date.now());
 			}
 			var gainHealth:Bool = true; // prevent health gain, *if* sustains are treated as a singular note
 			if (guitarHeroSustains && note.isSustainNote) gainHealth = false;
