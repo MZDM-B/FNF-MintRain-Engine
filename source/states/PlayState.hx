@@ -2143,7 +2143,7 @@ class PlayState extends MusicBeatState
 
 			var value3:String = '';
 			if(eventNotes[0].value3 != null)
-				value1 = eventNotes[0].value3;
+				value3 = eventNotes[0].value3;
 
 			var value4:String = '';
 			if(eventNotes[0].value4 != null)
@@ -2653,7 +2653,8 @@ class PlayState extends MusicBeatState
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.data.ratingOffset);
 		
 		allNotesMs += noteDiff;
-		averageMs = (allNotesMs / songHits).toInt();
+		averageMs = Math.floor(allNotesMs / songHits);
+		
 		/*if (!ClientPrefs.data.rmmsTimeTxt) {
 			msTimeTxt.alpha = 1;
 			msTimeTxt.scale.set(1.35, 1.2);
