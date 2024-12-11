@@ -210,6 +210,8 @@ class PlayState extends MusicBeatState
 
 	public var healthBar:Bar;
 	public var timeBar:Bar;
+	public var healthBarOverlay:FlxSprite;
+
 	var songPercent:Float = 0;
 
 	public var ratingsData:Array<Rating> = Rating.loadDefault();
@@ -572,6 +574,10 @@ class PlayState extends MusicBeatState
 		moveCameraSection();
 
 		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBar', function() return health, 0, 2);
+		if (ClientPrefs.data.healthbarstyle == 'Kade'){
+			if (ClientPrefs.data.downScroll) healthBar.y = 50;
+			else healthBar.y = FlxG.height * 0.9;
+		}
 		healthBar.screenCenter(X);
 		healthBar.leftToRight = false;
 		healthBar.scrollFactor.set();
@@ -580,6 +586,29 @@ class PlayState extends MusicBeatState
 		reloadHealthBarColors();
 		uiGroup.add(healthBar);
 
+		healthBarOverlay = new FlxSprite().loadGraphic(Paths.image('healthBarOverlay'));
+		//healthBarOverlay = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBarOverlay', function() return health, 0, 2);
+		healthBarOverlay.y = FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11);
+		healthBarOverlay.screenCenter(X);
+		healthBarOverlay.scrollFactor.set();
+		healthBarOverlay.visible = !ClientPrefs.data.hideHud;
+        healthBarOverlay.color = FlxColor.BLACK;
+		healthBarOverlay.x = healthBar.x-1.5;
+	    healthBarOverlay.alpha = ClientPrefs.data.healthBarAlpha;
+		if(ClientPrefs.data.healthbarstyle == 'OS') 		uiGroup.add(healthBarOverlay);
+
+		msTimeTxt = new FlxText(0, 0, 400, "", 32);
+		msTimeTxt.setFormat(Paths.font('vcr.ttf'), 23, 0xFF87CEEB, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		msTimeTxt.scrollFactor.set();
+		msTimeTxt.alpha = 0;
+		msTimeTxt.visible = true;
+		msTimeTxt.borderSize = 1.3;
+		/*mstimeTxt.y = comboSpr.y + 20;
+		mstimeTxt.x += comboSpr.x + 100;*/
+		msTimeTxt.x = ClientPrefs.data.comboOffset[2] + 345;
+		msTimeTxt.y = ClientPrefs.data.comboOffset[3] + 480 ;
+		uiGroup.add(msTimeTxt);
+			
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
 		iconP1.visible = !ClientPrefs.data.hideHud;
@@ -1968,10 +1997,14 @@ class PlayState extends MusicBeatState
 	public dynamic function updateIconsScale(elapsed:Float)
 	{
 		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 9 * playbackRate));
+		if (ClientPrefs.data.iconbopstyle == 'Kade')
+		mult = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 30 * playbackRate));
 		iconP1.scale.set(mult, mult);
 		iconP1.updateHitbox();
-
+		
 		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
+		if (ClientPrefs.data.iconbopstyle == 'Kade')
+		mult = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 30 * playbackRate));
 		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
 	}
@@ -2654,26 +2687,7 @@ class PlayState extends MusicBeatState
 		
 		allNotesMs += noteDiff;
 		averageMs = Math.floor(allNotesMs / songHits);
-		
-		/*if (!ClientPrefs.data.rmmsTimeTxt) {
-			msTimeTxt.alpha = 1;
-			msTimeTxt.scale.set(1.35, 1.2);
-			msTimeTxt.text =Std.string(Math.round(noteDiff)) + "ms";
 
-			if (msTimeTxtTween1 != null){
-				msTimeTxtTween1.cancel(); msTimeTxtTween1.destroy(); // top 10 awesome code
-			}
-			msTimeTxtTween1 = FlxTween.tween(msTimeTxt, {alpha: 0}, 0.2, {
-				onComplete: function(tw:FlxTween) {msTimeTxtTween1 = null;}, startDelay: 0.3
-			});
-
-			if (msTimeTxtTween2 != null){
-				msTimeTxtTween2.cancel(); msTimeTxtTween2.destroy(); // top 10 awesome code
-			}
-			msTimeTxtTween2 = FlxTween.tween(msTimeTxt.scale, {x: 1, y: 1}, 0.4, {
-				ease: FlxEase.circOut,
-			});
-		}*/
 		vocals.volume = 1;
 
 		if (!ClientPrefs.data.comboStacking && comboGroup.members.length > 0)
@@ -2722,6 +2736,27 @@ class PlayState extends MusicBeatState
 			antialias = !isPixelStage;
 		}
 
+		if (!ClientPrefs.data.rmmsTimeTxt) {
+			msTimeTxt.alpha = 1;
+			msTimeTxt.scale.set(1.35, 1.2);
+			msTimeTxt.text = Std.string(Math.round(noteDiff)) + "ms";
+
+			if (msTimeTxtTween1 != null){
+				msTimeTxtTween1.cancel(); msTimeTxtTween1.destroy(); // top 10 awesome code
+			}
+			msTimeTxtTween1 = FlxTween.tween(msTimeTxt, {alpha: 0}, 0.2, {
+				onComplete: function(tw:FlxTween) {msTimeTxtTween1 = null;}, startDelay: 0.3
+			});
+
+			if (msTimeTxtTween2 != null){
+				msTimeTxtTween2.cancel(); msTimeTxtTween2.destroy(); // top 10 awesome code
+			}
+			msTimeTxtTween2 = FlxTween.tween(msTimeTxt.scale, {x: 1, y: 1}, 0.4, {
+				ease: FlxEase.circOut,
+			});
+		}
+
+
 		if (ClientPrefs.data.popUpRating)
 		{
 			rating.loadGraphic(Paths.image(uiFolder + daRating.image + ratingexspr + uiPostfix));
@@ -2760,20 +2795,8 @@ class PlayState extends MusicBeatState
 			comboSpr.y += 60 + 30 - 80 + 200;
 			comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
 
-			msTimeTxt = new FlxText(0, 0, 400, "", 32);
-			msTimeTxt.setFormat(Paths.font('vcr.ttf'), 23, 0xFF87CEEB, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			msTimeTxt.scrollFactor.set();
-			msTimeTxt.alpha = 0;
-			msTimeTxt.visible = true;
-			msTimeTxt.borderSize = 2;
-			/*mstimeTxt.y = comboSpr.y + 20;
-			mstimeTxt.x += comboSpr.x + 100;*/
-			msTimeTxt.x = ClientPrefs.data.comboOffset[2] + 345;
-			msTimeTxt.y = -ClientPrefs.data.comboOffset[3] + 480 ;
-
 			comboGroup.add(rating);
 			comboGroup.add(theEXrating);
-			comboGroup.add(msTimeTxt);
 
 			if (!PlayState.isPixelStage)
 			{
@@ -3380,9 +3403,34 @@ class PlayState extends MusicBeatState
 
 		if (generatedMusic)
 			notes.sort(FlxSort.byY, ClientPrefs.data.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
+		if (ClientPrefs.data.iconbopstyle != "NONE") {
 
 		iconP1.scale.set(1.2, 1.2);
 		iconP2.scale.set(1.2, 1.2);
+		}
+		dancingLeft = !dancingLeft;
+
+		if (ClientPrefs.data.iconbopstyle == "OS") {
+			if (dancingLeft){
+				iconP1.angle = 8; iconP2.angle = 8; // maybe i should do it with tweens, but i'm lazy // i'll make it in -1.0.0, i promise
+			} else { 
+				iconP1.angle = -8; iconP2.angle = -8;
+			}
+		}
+		else if (ClientPrefs.data.iconbopstyle == "MintRain") {
+			if (curBeat%4 == 0) {
+				iconP1.angle = -25;
+				iconP2.angle = 25;
+
+				FlxTween.tween(iconP1, {angle: 0}, 0.3, {ease: FlxEase.circOut});
+				FlxTween.tween(iconP2, {angle: 0}, 0.3, {ease: FlxEase.circOut});
+			}
+			}
+			else if (ClientPrefs.data.iconbopstyle == "Kade") {
+				iconP1.scale.set(1.4, 1.4);
+				iconP2.scale.set(1.4, 1.4);
+			}
+
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();

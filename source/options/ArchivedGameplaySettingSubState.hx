@@ -48,7 +48,7 @@ class ArchivedGameplaySettingSubState extends BlueBaseOptionsMenu
 		"（施工中）\n设置健康条的样式",
 		'healthbarstyle',
 		STRING,
-		['Psych', 'OS', 'MintRain', 'Kade']);
+		['Psych', 'OS', 'Kade']);
 		addOption(option);
 
 

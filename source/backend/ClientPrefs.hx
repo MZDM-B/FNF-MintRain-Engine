@@ -106,7 +106,7 @@ import states.TitleState;
 	public var scoretxtbounce:Bool = false;
 	public var exratbounce:Bool = false;
 	public var iconbopstyle:String = 'MintRain';
-	public var hpbarstyle:String = 'Psych';
+	public var healthbarstyle:String = 'Psych';
 
 
 }
