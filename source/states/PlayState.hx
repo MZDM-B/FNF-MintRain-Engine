@@ -2737,7 +2737,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (!ClientPrefs.data.rmmsTimeTxt) {
-			msTimeTxt.alpha = 1;
+			msTimeTxt.alpha = ClientPrefs.data.ratingsAlpha;
 			msTimeTxt.scale.set(1.35, 1.2);
 			msTimeTxt.text = Std.string(Math.round(noteDiff)) + "ms";
 
@@ -2794,6 +2794,12 @@ class PlayState extends MusicBeatState
 			comboSpr.antialiasing = antialias;
 			comboSpr.y += 60 + 30 - 80 + 200;
 			comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
+			if (ClientPrefs.data.ratingsAlpha != 1)
+				{
+				rating.alpha = ClientPrefs.data.ratingsAlpha;
+				theEXrating.alpha = ClientPrefs.data.ratingsAlpha;
+				comboSpr.alpha = ClientPrefs.data.ratingsAlpha;
+				}
 
 			comboGroup.add(rating);
 			comboGroup.add(theEXrating);
@@ -2839,6 +2845,9 @@ class PlayState extends MusicBeatState
 				numScore.velocity.x = FlxG.random.float(-5, 5) * playbackRate;
 				numScore.visible = !ClientPrefs.data.hideHud;
 				numScore.antialiasing = antialias;
+
+				if (ClientPrefs.data.ratingsAlpha != 1)
+					numScore.alpha = ClientPrefs.data.ratingsAlpha;
 
 				// if (combo >= 10 || combo == 0)
 				if (showComboNum)

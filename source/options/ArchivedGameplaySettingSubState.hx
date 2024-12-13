@@ -44,6 +44,17 @@ class ArchivedGameplaySettingSubState extends BlueBaseOptionsMenu
 		BOOL);
 		addOption(option);
 
+		var option:Option = new Option('Ratings Opacity',
+			'How much transparent should the Rating be.',
+			'ratingsAlpha',
+			PERCENT);
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
+
 		var option:Option = new Option('HealthBar Style',
 		"（施工中）\n设置健康条的样式",
 		'healthbarstyle',

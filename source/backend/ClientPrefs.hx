@@ -107,6 +107,7 @@ import states.TitleState;
 	public var exratbounce:Bool = false;
 	public var iconbopstyle:String = 'MintRain';
 	public var healthbarstyle:String = 'Psych';
+	public var ratingsAlpha:Float = 1;
 
 
 }
